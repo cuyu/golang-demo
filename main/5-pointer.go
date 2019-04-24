@@ -41,42 +41,4 @@ func main() {
 		p3 = &Vertex{1, 2} // has type *Vertex
 	)
 	fmt.Println(p3, v2, v3)
-
-	// An array's length is part of its type, so arrays cannot be resized.
-	var a [2]string
-	a[0] = "Hello"
-	a[1] = "World"
-	fmt.Println(a[0], a[1])
-	fmt.Println(a)
-
-	primes := [6]int{2, 3, 5, 7, 11, 13}
-	fmt.Println(primes)
-
-	// A slice is formed by specifying two indices, which includes the first element, but excludes the last one
-	var s []int = primes[1:4]
-	fmt.Println(s)
-
-	// Slices are like references to arrays, they do not store any data
-	s[0] = 1
-	fmt.Println(primes)
-
-	// This creates an array, then builds a slice that references it:
-	st := []struct {
-		i int
-		b bool
-	}{
-		{2, true},
-		{3, false},
-		{5, true},
-		{7, true},
-		{11, false},
-		{13, true},
-	}
-	fmt.Println(st)
-
-	// These slice expressions are equivalent
-	fmt.Println(primes[0:6])
-	fmt.Println(primes[0:])
-	fmt.Println(primes[:6])
-	fmt.Println(primes[:])
 }
