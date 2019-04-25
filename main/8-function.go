@@ -17,6 +17,18 @@ func adder() func(int) int {
 	}
 }
 
+// fibonacci is a function that returns
+// a function that returns an int.
+func fibonacci() func() int {
+	a := 0
+	b := 1
+	return func() int {
+		tmp := a + b
+		a, b = b, tmp
+		return a
+	}
+}
+
 func main() {
 	// Functions are values too. They can be passed around just like other values.
 	// Function values may be used as function arguments and return values.
@@ -36,5 +48,11 @@ func main() {
 			pos(i),
 			neg(-2*i),
 		)
+	}
+
+	// An example
+	f := fibonacci()
+	for i := 0; i < 10; i++ {
+		fmt.Println(f())
 	}
 }
