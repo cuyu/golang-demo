@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/tour/tree"
 	"strconv"
 	"time"
 )
@@ -42,6 +43,58 @@ func fibSelect(c, quit chan int) {
 		case <-quit:
 			fmt.Println("quit")
 			return
+		}
+	}
+}
+
+func ClockBoom() {
+	tick := time.Tick(100 * time.Millisecond)
+	boom := time.After(500 * time.Millisecond)
+	for {
+		select {
+		case <-tick:
+			fmt.Println("tick.")
+		case <-boom:
+			fmt.Println("BOOM!")
+			return
+		default:
+			fmt.Println("    .")
+			time.Sleep(50 * time.Millisecond)
+		}
+	}
+}
+
+// Exercise!
+func _WalkTree(t *tree.Tree, ch chan int, isRoot bool) {
+	// Walks the tree t sending all values from the tree to the channel ch.
+	if t.Right != nil {
+		_WalkTree(t.Right, ch, false)
+	}
+	ch <- t.Value
+	if t.Left != nil {
+		_WalkTree(t.Left, ch, false)
+	}
+	if isRoot {
+		close(ch)
+	}
+}
+
+func WalkTree(t *tree.Tree, ch chan int) {
+	_WalkTree(t, ch, true)
+}
+
+func SameTree(t1, t2 *tree.Tree) bool {
+	c1 := make(chan int)
+	c2 := make(chan int)
+	go WalkTree(t1, c1)
+	go WalkTree(t2, c2)
+	for {
+		i1, ok1 := <-c1
+		i2, ok2 := <-c2
+		if i1 != i2 || ok1 != ok2{
+			return false
+		} else if !ok1 {
+			return true
 		}
 	}
 }
@@ -87,18 +140,10 @@ func main() {
 	fibSelect(e, quit)
 
 	// The default case in a select is run if no other case is ready.
-	tick := time.Tick(100 * time.Millisecond)
-	boom := time.After(500 * time.Millisecond)
-	for {
-		select {
-		case <-tick:
-			fmt.Println("tick.")
-		case <-boom:
-			fmt.Println("BOOM!")
-			return
-		default:
-			fmt.Println("    .")
-			time.Sleep(50 * time.Millisecond)
-		}
-	}
+	ClockBoom()
+
+	// Exercise!
+	tree1 := tree.New(1)
+	tree2 := tree.New(2)
+	fmt.Println(SameTree(tree1, tree2))
 }
