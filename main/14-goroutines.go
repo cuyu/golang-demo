@@ -64,7 +64,7 @@ func ClockBoom() {
 	}
 }
 
-// Exercise!
+// ******** Exercise! *********
 func _WalkTree(t *tree.Tree, ch chan int, isRoot bool) {
 	// Walks the tree t sending all values from the tree to the channel ch.
 	if t.Right != nil {
@@ -142,7 +142,7 @@ func main() {
 	// The default case in a select is run if no other case is ready.
 	ClockBoom()
 
-	// Exercise!
+	// ******** Exercise! *********
 	tree1 := tree.New(1)
 	tree2 := tree.New(2)
 	fmt.Println(SameTree(tree1, tree2))
